@@ -9,7 +9,7 @@ public class WinEffectManager : MonoBehaviour
     [SerializeField] private List<Transform> starSpawnPositions;
 
     private float starSpawnTimer;
-    private float starSpawnTimerMax = .2f;
+    private float starSpawnTimerMax = 1f;
 
 
     private bool hasWon;
@@ -43,12 +43,14 @@ public class WinEffectManager : MonoBehaviour
         {
             int randomSpawnIndex = Random.Range(0, starSpawnPositions.Count);
             Instantiate(pfStar, starSpawnPositions[randomSpawnIndex].position, Quaternion.identity);
+            SoundManager.Instance.PlayClip(GameResources.Instance.whooshAudioClip, 0.7f);
             starSpawnTimer += starSpawnTimerMax;
         }
     }
     private void Instance_OnWin(PieceManager obj)
     {
         hasWon = true;
+
     }
 
 }
