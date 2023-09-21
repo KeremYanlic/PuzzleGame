@@ -11,6 +11,25 @@ public class PieceManager : SingletonMonobehaviour<PieceManager>
     public int counter = 0;
 
     private bool hasWon = false;
+
+    private void OnEnable()
+    {
+        //Subscribe to win event
+        OnWin += PieceManager_OnWin;
+    }
+    private void OnDisable()
+    {
+        //Unsubscribe from win event
+        OnWin -= PieceManager_OnWin;
+    }
+
+    private void PieceManager_OnWin(PieceManager obj)
+    {
+        SoundManager.Instance.PlayClip(GameResources.Instance.winAudioClip, 1f);
+        SoundManager.Instance.PlayClip(GameResources.Instance.clapAudioClip, 0.8f);
+    }
+
+
     private void Update()
     {
         if (hasWon) return;
@@ -21,13 +40,6 @@ public class PieceManager : SingletonMonobehaviour<PieceManager>
             CallWinEvent();
             return;
         }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            foreach (GameObject piece in GetPuzzlePieces())
-            {
-                piece.transform.eulerAngles = new Vector3(0, 0, Mathf.RoundToInt(0));
-            }
-        }
 
 
         if (Input.GetMouseButtonDown(0))
@@ -37,6 +49,11 @@ public class PieceManager : SingletonMonobehaviour<PieceManager>
 
             if (hit.collider != null)
             {
+                if (hit.collider.gameObject.GetComponent<Piece>().isCorrect)
+                {
+                    SoundManager.Instance.PlayClip(GameResources.Instance.errorAudioClip, .8f);
+                    return;
+                }
                 RotatePiece(hit.collider.gameObject);
 
                 foreach (GameObject piece in GetPuzzlePieces())
@@ -52,6 +69,7 @@ public class PieceManager : SingletonMonobehaviour<PieceManager>
     }
 
 
+
     private void RotatePiece(GameObject gameObject)
     {
         gameObject.transform.eulerAngles += new Vector3(0, 0, 90);
@@ -60,6 +78,17 @@ public class PieceManager : SingletonMonobehaviour<PieceManager>
         piece.isCorrect = true ?
             Mathf.RoundToInt(gameObject.transform.eulerAngles.z) == 0 :
             Mathf.RoundToInt(gameObject.transform.eulerAngles.z) != 0;
+
+
+        if (piece.isCorrect)
+        {
+            SoundManager.Instance.PlayClip(GameResources.Instance.clickAudioClip, 1f);
+            SoundManager.Instance.PlayClip(GameResources.Instance.dingAudioClip, 1f);
+        }
+        else
+        {
+            SoundManager.Instance.PlayClip(GameResources.Instance.clickAudioClip, 1f);
+        }
     }
 
 
