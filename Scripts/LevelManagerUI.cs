@@ -30,10 +30,13 @@ public class LevelManagerUI : MonoBehaviour
             if (btn.interactable)
             {
                 btn.gameObject.GetComponent<Image>().color = interactableColor;
+                btn.gameObject.GetComponent<ButtonManager>().canScale = true;
             }
             else
             {
                 btn.gameObject.GetComponent<Image>().color = nonInteractableColor;
+                btn.gameObject.GetComponent<ButtonManager>().canScale = false;
+
             }
         }
     }
