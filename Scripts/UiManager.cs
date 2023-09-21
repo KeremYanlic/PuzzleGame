@@ -24,10 +24,12 @@ public class UiManager : MonoBehaviour
 
         restartBtn.onClick.AddListener(() =>
         {
+
             Restart();
         });
         returnBtn.onClick.AddListener(() =>
         {
+
             LoadMainMenu();
         });
 
@@ -35,6 +37,7 @@ public class UiManager : MonoBehaviour
 
         nextLevelBtn.onClick.AddListener(() =>
         {
+
             int currentLevel = PlayerPrefs.GetInt("currentLevel", 1);
             if (currentLevel < 8)
             {
@@ -62,10 +65,12 @@ public class UiManager : MonoBehaviour
 
         winSceneRestartBtn.onClick.AddListener(() =>
         {
+
             Restart();
         });
         mainMenuBtn.onClick.AddListener(() =>
         {
+
             LoadMainMenu();
         });
 
@@ -73,12 +78,15 @@ public class UiManager : MonoBehaviour
 
     }
 
+
     private void Restart()
     {
+        SoundManager.Instance.PlayClip(GameResources.Instance.clickAudioClip, 1f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     private void LoadMainMenu()
     {
+        SoundManager.Instance.PlayClip(GameResources.Instance.clickAudioClip, 1f);
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -101,6 +109,10 @@ public class UiManager : MonoBehaviour
         LeanTween.moveLocalY(winScene.gameObject, 0f, 1f);
 
 
+    }
+    public void PlayHoverSound()
+    {
+        SoundManager.Instance.PlayClip(GameResources.Instance.btnHoverAudioClip, 0.5f);
     }
 
 }
